@@ -10,6 +10,8 @@ const[TotalAmount,setTotalAmount]=useState("")
 const[expenseAmount,setExpenseAmount]=useState("")
 const[incomeHistory,setIncomeHistory]=useState([])
 const[ExpenseHistory,setExpenseHistory]=useState([])
+// const[modifyButtonValue,setmodifyButtonValue]=useState(true)
+const[disable,setDisable]=useState(false)
 
 // Taking values from input using states
   const IncomeHandler=(e)=>{
@@ -21,7 +23,6 @@ const[ExpenseHistory,setExpenseHistory]=useState([])
 
   const SelectHandler=(e)=>{
     setSelectValue(e.target.value)
-    console.log(selectValue);
   }
 
   // calculating Total amount
@@ -93,40 +94,37 @@ const[ExpenseHistory,setExpenseHistory]=useState([])
         expense:selectValue,
         Amount:expenseAmount
       }
-      console.log(obj);
       ExpenseHistory.push(obj)
+      setDisable(false)
       setExpenseHistory([...ExpenseHistory])
       setTotalAmount(TotalAmount1-expenseAmount1)
       setExpenseAmount("")
     }
-    
-    console.log(typeof(incomeAmount1));
   }
   // modifying expence values
   const ModifyButtonHandler=(id)=>{ 
     for (let i = 0; i < ExpenseHistory.length; i++) {
-      console.log(ExpenseHistory[i].id);
+      //Disabling the edit button
+      setDisable(true)
       if(id===ExpenseHistory[i].id){
-        console.log(ExpenseHistory[i].Amount);
+        var temp=parseInt(ExpenseHistory[i].Amount)
+        setTotalAmount(TotalAmount+temp)
         setExpenseAmount(ExpenseHistory[i].Amount)
         ExpenseHistory.splice(i,1)
       } 
-      setExpenseHistory([...ExpenseHistory])
-      var DisableEditTodo=document.getElementsByClassName("ModifyButton");
-    }
-    for(let i=0;i<DisableEditTodo.length;i++){
-      DisableEditTodo[i].disabled=true;
-  }
-    
+      
+      setExpenseHistory([...ExpenseHistory])     
+}
   }
   const DeleteExpenseHandler=(id)=>{
     for (let i = 0; i < ExpenseHistory.length; i++) {
       if(id===ExpenseHistory[i].id){
+        var temp=parseInt(ExpenseHistory[i].Amount)
+        setTotalAmount(TotalAmount+temp)
         ExpenseHistory.splice(i,1)
       }
       setExpenseHistory([...ExpenseHistory])
     }
-    
   }
   
   return (
@@ -168,7 +166,7 @@ const[ExpenseHistory,setExpenseHistory]=useState([])
         <h2>Expense History</h2>
           <table><th>income</th>{"|"}<th>Amount</th>{""} <th>Action</th>
             {ExpenseHistory.map((item)=>( <tr> <td>{item.expense}</td>{"|"} 
-            <td>{item.Amount}</td> <td> <button className='ModifyButton' onClick={()=>ModifyButtonHandler(item.id)}>Modify</button></td> <td><button className='ModifyButton1' onClick={()=>DeleteExpenseHandler(item.id)}>Delete</button></td></tr>))}
+            <td>{item.Amount}</td><td><button className='ModifyButton' disabled={disable}  onClick={()=>ModifyButtonHandler(item.id)}>Modify</button></td> <td><button className='ModifyButton1' onClick={()=>DeleteExpenseHandler(item.id)}>Delete</button></td></tr>))}
           </table>
         </div>
         </div>
