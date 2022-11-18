@@ -4,9 +4,9 @@ import React, { useState } from 'react'
 function App() {
   // States
 const[income,setIncome]=useState("")
-const[incomeAmount,setIncomeAmount]=useState("")
+const[incomeAmount,setIncomeAmount]=useState()
 const[selectValue,setSelectValue]=useState("")
-const[TotalAmount,setTotalAmount]=useState("")
+const[TotalAmount,setTotalAmount]=useState(0)
 const[expenseAmount,setExpenseAmount]=useState("")
 const[incomeHistory,setIncomeHistory]=useState([])
 const[ExpenseHistory,setExpenseHistory]=useState([])
@@ -52,9 +52,14 @@ const[disable,setDisable]=useState(false)
         income:income,
         incomeAmount:incomeAmount
       }
+      var incomeAmount1=Number(incomeAmount)
+      // var TotalAmount1=parseInt(TotalAmount)
+      console.log(typeof(incomeAmount1));
+      console.log(typeof(TotalAmount));
       incomeHistory.push(obj)
       setIncomeHistory([...incomeHistory])
-      setTotalAmount(incomeAmount)
+      console.log(parseInt(TotalAmount+incomeAmount));
+      setTotalAmount(TotalAmount+incomeAmount1)
       setIncome("")
       setIncomeAmount("")
     }
